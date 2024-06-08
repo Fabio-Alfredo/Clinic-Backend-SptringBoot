@@ -4,8 +4,10 @@ import com.grupo01.clinica.domain.dtos.req.AppointmentDTO;
 import com.grupo01.clinica.domain.entities.Appointment;
 import com.grupo01.clinica.domain.entities.User;
 import com.grupo01.clinica.repositorie.AppointmentRepository;
+import com.grupo01.clinica.repositorie.UserRepository;
 import com.grupo01.clinica.service.contracts.AppointmentService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -17,10 +19,12 @@ import java.util.UUID;
 public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
-    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, ModelMapper modelMapper) {
+    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.appointmentRepository = appointmentRepository;
+        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -50,4 +54,17 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.save(appointment);
     }
 
+    @Override
+    public List<Appointment> getAppointments(UUID id, String status) {
+        if(status != null && !status.isEmpty()){
+            return appointmentRepository.findByIdAndStatus(id, status);
+        }else {
+            User user = userRepository.findById(id).orElse(null);
+            if(user != null){
+                return appointmentRepository.findByUser(user);
+            }else {
+                return null;
+            }
+        }
+    }
 }
