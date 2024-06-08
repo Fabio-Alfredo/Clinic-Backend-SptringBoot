@@ -5,6 +5,8 @@ import com.grupo01.clinica.repositorie.RoleRepository;
 import com.grupo01.clinica.service.contracts.RoleService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RoleServiceImpl implements RoleService {
 
@@ -16,6 +18,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role getRoleById(String id) {
-        return roleRepository.getReferenceById(id);
+        return roleRepository.findByCode(id);
     }
+
 }

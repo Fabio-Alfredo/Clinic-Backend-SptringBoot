@@ -21,4 +21,5 @@ public interface UserService {
     void updateUserRol(User user, Role role);
     List<User>getAllUsersByRole(List<Role> roles);
     User findBiId(UUID id);
+    void deleteUserRole(User user, Role role);
 }
