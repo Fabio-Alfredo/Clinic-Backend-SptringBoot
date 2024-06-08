@@ -70,4 +70,10 @@ public class AppointmentController {
             return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!"+e.getMessage());
         }
     }
+
+    @GetMapping("/appointment/own")
+    @PreAuthorize("hasAnyAuthority('PCTE')")
+    public List<Appointment> getPatientAppointments(@RequestParam UUID id, @RequestParam (required = false) String status){
+        return appointmentService.getAppointments(id, status);
+    }
 }

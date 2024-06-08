@@ -6,6 +6,7 @@ import com.grupo01.clinica.domain.entities.User;
 import com.grupo01.clinica.repositorie.AppointmentRepository;
 import com.grupo01.clinica.service.contracts.AppointmentService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -52,5 +53,14 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         appointment.setStatus(status);
         appointmentRepository.save(appointment);
+    }
+
+    @Override
+    public List<Appointment> getAppointments(UUID id, String status) {
+        if(status == null){
+            return appointmentRepository.findByPatientIdandStatus(id, status);
+        }else {
+            return appointmentRepository.findByPatientId(id);
+        }
     }
 }

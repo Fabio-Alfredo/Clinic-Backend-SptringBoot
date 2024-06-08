@@ -7,7 +7,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.UUID;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, UUID>{
 
+        List<Appointment> findByPatientIdandStatus(UUID id, String status);
+
+        List<Appointment> findByPatientId(UUID id);
 }
