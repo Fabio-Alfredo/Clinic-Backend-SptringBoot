@@ -31,7 +31,6 @@ public class Token {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_code")
-    @JsonIgnore
     private User user;
 
     public Token(String content, User user) {

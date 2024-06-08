@@ -6,7 +6,7 @@ import com.grupo01.clinica.domain.dtos.res.GeneralResponse;
 import com.grupo01.clinica.domain.dtos.res.TokenDTO;
 import com.grupo01.clinica.domain.entities.Token;
 import com.grupo01.clinica.domain.entities.User;
-import com.grupo01.clinica.service.UserService;
+import com.grupo01.clinica.service.contracts.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +31,7 @@ public class AuthController {
         try {
             //User user = userService.findByIdentifier(info.getIdentifier());
             User user = userService.findByemail(info.getEmail());
-            System.out.println(user);
+            //System.out.println(user);
             if (user == null)
             {
                 return GeneralResponse.getResponse(HttpStatus.UNAUTHORIZED, "User not found! 1");

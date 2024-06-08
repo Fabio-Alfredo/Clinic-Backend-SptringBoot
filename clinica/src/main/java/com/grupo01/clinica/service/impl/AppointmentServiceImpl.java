@@ -1,0 +1,56 @@
+package com.grupo01.clinica.service.impl;
+
+import com.grupo01.clinica.domain.dtos.req.AppointmentDTO;
+import com.grupo01.clinica.domain.entities.Appointment;
+import com.grupo01.clinica.domain.entities.User;
+import com.grupo01.clinica.repositorie.AppointmentRepository;
+import com.grupo01.clinica.service.contracts.AppointmentService;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class AppointmentServiceImpl implements AppointmentService {
+
+    private final AppointmentRepository appointmentRepository;
+    private final ModelMapper modelMapper;
+
+    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, ModelMapper modelMapper) {
+        this.appointmentRepository = appointmentRepository;
+        this.modelMapper = modelMapper;
+    }
+
+    @Override
+    public void createAppointment(AppointmentDTO req, User user){
+        Appointment appointment = modelMapper.map(req, Appointment.class);
+        appointment.setUser(user);
+        appointment.setDate(Date.from(Instant.now()));
+        appointment.setStatus("PENDING");
+        appointmentRepository.save(appointment);
+    }
+
+    @Override
+    public List<Appointment> findAll() {
+        return appointmentRepository.findAll();
+    }
+
+    @Override
+    public Appointment findById(UUID id) {
+        return appointmentRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void updateStatus(List<User> doctors, Appointment appointment, String status) {
+        List<User> filteredDoctors = doctors.stream().filter(d -> d.getAppointments().stream().filter(app ->(app.getDate().equals(appointment.getDate()) && app.getStatus().equals("ACTIVO"))).isParallel()).toList();
+        for(User doctor : filteredDoctors){
+            System.out.println(doctor.toString());
+        }
+
+        appointment.setStatus(status);
+        appointmentRepository.save(appointment);
+    }
+}

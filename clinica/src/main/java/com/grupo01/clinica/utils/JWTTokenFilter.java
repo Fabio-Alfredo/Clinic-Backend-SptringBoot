@@ -1,14 +1,13 @@
 package com.grupo01.clinica.utils;
 
 import com.grupo01.clinica.domain.entities.User;
-import com.grupo01.clinica.service.UserService;
+import com.grupo01.clinica.service.contracts.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -21,7 +20,6 @@ import java.io.IOException;
 public class JWTTokenFilter extends OncePerRequestFilter {
 
      private final JWTTools jwtTools;
-
     private final UserService userService;
 
     public JWTTokenFilter(JWTTools jwtTools, UserService userService) {
@@ -38,7 +36,6 @@ public class JWTTokenFilter extends OncePerRequestFilter {
 
         if(tokenHeader != null && tokenHeader.startsWith("Bearer ") && tokenHeader.length() > 7) {
             token = tokenHeader.substring(7);
-
 
             try {
                 email = jwtTools.getUsernameFrom(token);

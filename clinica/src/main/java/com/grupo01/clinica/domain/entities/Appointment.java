@@ -18,6 +18,7 @@ public class Appointment {
     private UUID id;
     private String reason;
     private Date date;
+    private String status;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;

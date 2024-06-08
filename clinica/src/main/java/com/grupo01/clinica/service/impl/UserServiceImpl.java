@@ -1,10 +1,13 @@
-package com.grupo01.clinica.service;
+package com.grupo01.clinica.service.impl;
 
 import com.grupo01.clinica.domain.dtos.req.UserRegisterDTO;
+import com.grupo01.clinica.domain.entities.Role;
 import com.grupo01.clinica.domain.entities.Token;
 import com.grupo01.clinica.domain.entities.User;
 import com.grupo01.clinica.repositorie.TokenRepository;
 import com.grupo01.clinica.repositorie.UserRepository;
+import com.grupo01.clinica.service.contracts.RoleService;
+import com.grupo01.clinica.service.contracts.UserService;
 import com.grupo01.clinica.utils.JWTTools;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -13,22 +16,26 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final JWTTools jwtTools;
     private final TokenRepository tokenRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final RoleService roleService;
 
-    public UserServiceImpl(JWTTools jwtTools, TokenRepository tokenRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+
+    public UserServiceImpl(JWTTools jwtTools, TokenRepository tokenRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper, RoleService roleService) {
         this.jwtTools = jwtTools;
         this.tokenRepository = tokenRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
+        this.roleService = roleService;
     }
 
     @Override
@@ -96,9 +103,34 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public void createUser(UserRegisterDTO user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User  newUser = modelMapper.map(user, User.class);
         userRepository.save(newUser);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+
+    @Override
+    public void updateUserRol(User user, String role) {
+       Role newrole= roleService.getRoleById(role);
+       user.setRoles(List.of(newrole));
+       userRepository.save(user);
+    }
+
+    @Override
+    public List<User> getAllUsersByRole(List<Role> roles) {
+        //return userRepository.findAllByRoles(roles);
+        return null;
+    }
+
+    @Override
+    public User findBiId(UUID id) {
+        return userRepository.findById(id).orElse(null);
     }
 }
