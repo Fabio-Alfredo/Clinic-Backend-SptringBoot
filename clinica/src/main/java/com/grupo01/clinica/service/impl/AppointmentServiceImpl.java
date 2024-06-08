@@ -27,6 +27,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void createAppointment(AppointmentDTO req, User user){
         Appointment appointment = modelMapper.map(req, Appointment.class);
+        appointment.setD_realization(Date.from(Instant.now()));
         appointment.setUser(user);
         appointment.setStatus("PENDING");
         appointmentRepository.save(appointment);
@@ -40,6 +41,13 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public Appointment findById(UUID id) {
         return appointmentRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void finishAppointment(Appointment appointment) {
+        appointment.setStatus("FINISHED");
+        appointment.setD_finalization(Date.from(Instant.now()));
+        appointmentRepository.save(appointment);
     }
 
 }

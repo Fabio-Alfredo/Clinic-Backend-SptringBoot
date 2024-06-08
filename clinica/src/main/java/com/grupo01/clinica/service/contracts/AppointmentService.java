@@ -11,6 +11,7 @@ public interface AppointmentService {
     void createAppointment(AppointmentDTO req, User user);
     List<Appointment>findAll();
     Appointment findById(UUID id);
+    void finishAppointment(Appointment appointment);
     //List<Appointment>findAllByUser(User user);
 
 }
