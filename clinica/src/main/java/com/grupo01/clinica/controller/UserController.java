@@ -53,7 +53,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/updateRole")
+    @PostMapping("/config/user-role")
     @PreAuthorize("hasAnyAuthority('ADMN')")
     public ResponseEntity<GeneralResponse> updateUserRole(@RequestBody UserRoleDTO userRoleDTO){
         try {
@@ -62,6 +62,10 @@ public class UserController {
                 return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "User not found!");
             }
             Role role = roleService.getRoleById(userRoleDTO.getIdRole());
+            if (user.getRoles().contains(role)){
+                userService.deleteUserRole(user, role);
+                return GeneralResponse.getResponse(HttpStatus.OK, "User role deleted!");
+            }
             userService.updateUserRol(user,role );
             return GeneralResponse.getResponse(HttpStatus.OK, "User role updated!");
         } catch (Exception e){

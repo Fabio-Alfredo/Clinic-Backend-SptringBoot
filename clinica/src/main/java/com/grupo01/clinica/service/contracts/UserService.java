@@ -23,4 +23,5 @@ public interface UserService {
     List<User>getAllUsersByRole(List<Role> roles);
     void updateHistory(User user, Historic history);
     User findBiId(UUID id);
+    void deleteUserRole(User user, Role role);
 }

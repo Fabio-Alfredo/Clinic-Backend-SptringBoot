@@ -139,4 +139,10 @@ public class UserServiceImpl implements UserService {
     public User findBiId(UUID id) {
         return userRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public void deleteUserRole(User user, Role role) {
+        user.getRoles().remove(role);
+        userRepository.save(user);
+    }
 }
