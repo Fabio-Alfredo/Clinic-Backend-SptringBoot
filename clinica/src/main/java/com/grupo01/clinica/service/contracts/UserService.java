@@ -18,7 +18,7 @@ public interface UserService {
     User findUserAuthenticated();
     void createUser(UserRegisterDTO user);
     List<User>getAllUsers();
-    void updateUserRol(User user, String role);
+    void updateUserRol(User user, Role role);
     List<User>getAllUsersByRole(List<Role> roles);
     User findBiId(UUID id);
 }

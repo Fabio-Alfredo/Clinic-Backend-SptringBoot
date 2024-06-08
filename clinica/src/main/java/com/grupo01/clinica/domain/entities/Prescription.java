@@ -14,11 +14,9 @@ public class Prescription {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    private Date d_finalization;
     private String medicine;
-    private String dose;
-    private String frequency;
-    private String duration;
-    private Date date;
+    private String dosage;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Appointment appointment;

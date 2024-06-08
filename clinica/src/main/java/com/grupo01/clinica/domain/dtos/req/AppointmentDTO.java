@@ -5,5 +5,6 @@ import lombok.Data;
 @Data
 public class AppointmentDTO {
     private String reason;
+    private String d_request;
     private String email;
 }

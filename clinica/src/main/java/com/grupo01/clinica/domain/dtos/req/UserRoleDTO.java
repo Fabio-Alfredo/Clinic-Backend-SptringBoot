@@ -2,10 +2,11 @@ package com.grupo01.clinica.domain.dtos.req;
 
 import lombok.Data;
 
-@Data
-public class UserRegisterDTO {
+import java.util.UUID;
 
-    private String name;
+@Data
+public class UserRoleDTO {
+    private String idRole;
     private String email;
-    private String password;
+
 }

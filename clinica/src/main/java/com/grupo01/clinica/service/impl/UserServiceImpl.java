@@ -117,9 +117,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void updateUserRol(User user, String role) {
-       Role newrole= roleService.getRoleById(role);
-       user.setRoles(List.of(newrole));
+    public void updateUserRol(User user, Role role) {
+       user.getRoles().add(role);
        userRepository.save(user);
     }
 

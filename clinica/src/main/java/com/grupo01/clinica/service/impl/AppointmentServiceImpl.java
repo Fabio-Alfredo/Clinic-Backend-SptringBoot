@@ -28,7 +28,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void createAppointment(AppointmentDTO req, User user){
         Appointment appointment = modelMapper.map(req, Appointment.class);
         appointment.setUser(user);
-        appointment.setDate(Date.from(Instant.now()));
         appointment.setStatus("PENDING");
         appointmentRepository.save(appointment);
     }
@@ -43,14 +42,4 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepository.findById(id).orElse(null);
     }
 
-    @Override
-    public void updateStatus(List<User> doctors, Appointment appointment, String status) {
-        List<User> filteredDoctors = doctors.stream().filter(d -> d.getAppointments().stream().filter(app ->(app.getDate().equals(appointment.getDate()) && app.getStatus().equals("ACTIVO"))).isParallel()).toList();
-        for(User doctor : filteredDoctors){
-            System.out.println(doctor.toString());
-        }
-
-        appointment.setStatus(status);
-        appointmentRepository.save(appointment);
-    }
 }

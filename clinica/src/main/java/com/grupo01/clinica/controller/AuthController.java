@@ -26,7 +26,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<GeneralResponse> login(@RequestBody @Valid UserLoginDTO info, BindingResult validations){
+    public ResponseEntity<GeneralResponse> login(@RequestBody @Valid UserLoginDTO info){
 
         try {
             //User user = userService.findByIdentifier(info.getIdentifier());
