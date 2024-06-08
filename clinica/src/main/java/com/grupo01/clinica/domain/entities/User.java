@@ -54,6 +54,7 @@ public class User implements UserDetails {
     private List<Appointment> appointments;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority>authorities = new ArrayList<>();
         authorities = roles.stream().map(role -> new SimpleGrantedAuthority(role.getCode())).collect(Collectors.toList());
