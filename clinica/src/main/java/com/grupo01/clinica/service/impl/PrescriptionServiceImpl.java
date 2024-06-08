@@ -8,6 +8,8 @@ import com.grupo01.clinica.service.contracts.PrescriptionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -31,5 +33,16 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     @Override
     public List<Prescription> findAll() {
         return prescriptionRepository.findAll();
+    }
+
+    @Override
+    public List<Prescription> savePrescriptionList(List<PrescriptionDTO> prescriptions, Appointment appointment) {
+        List<Prescription> prescriptionList = new ArrayList<>();
+        for (PrescriptionDTO prescriptionDTO : prescriptions) {
+            Prescription prescription = modelMapper.map(prescriptionDTO, Prescription.class);
+            prescription.setAppointment(appointment);
+            prescriptionList = Collections.singletonList(prescription);
+        }
+        return prescriptionRepository.saveAll(prescriptionList);
     }
 }

@@ -11,6 +11,7 @@ import java.util.UUID;
 public class PrescriptionDTO {
 
     private String medicine;
-    private Date date;
+    private String dosage;
+    private Date d_finalization;
     private UUID appointment;
 }

@@ -2,6 +2,7 @@ package com.grupo01.clinica.service.impl;
 
 import com.grupo01.clinica.domain.dtos.req.AppointmentDTO;
 import com.grupo01.clinica.domain.entities.Appointment;
+import com.grupo01.clinica.domain.entities.Prescription;
 import com.grupo01.clinica.domain.entities.User;
 import com.grupo01.clinica.repositorie.AppointmentRepository;
 import com.grupo01.clinica.service.contracts.AppointmentService;
@@ -47,6 +48,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void finishAppointment(Appointment appointment) {
         appointment.setStatus("FINISHED");
         appointment.setD_finalization(Date.from(Instant.now()));
+        appointmentRepository.save(appointment);
+    }
+
+    @Override
+    public void savePrescriptions(List<Prescription> pres, Appointment appointment) {
+        appointment.setPrescriptions(pres);
         appointmentRepository.save(appointment);
     }
 

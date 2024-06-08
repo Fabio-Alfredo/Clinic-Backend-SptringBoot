@@ -1,5 +1,6 @@
 package com.grupo01.clinica.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,6 +19,7 @@ public class Prescription {
     private String medicine;
     private String dosage;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     private Appointment appointment;
 

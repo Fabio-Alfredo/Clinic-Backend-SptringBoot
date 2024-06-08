@@ -9,4 +9,5 @@ import java.util.List;
 public interface PrescriptionService {
     void savePrescription(PrescriptionDTO req, Appointment appointment);
     List<Prescription>findAll();
+    List<Prescription>savePrescriptionList(List<PrescriptionDTO> prescriptions, Appointment appointment);
 }

@@ -2,6 +2,7 @@ package com.grupo01.clinica.service.contracts;
 
 import com.grupo01.clinica.domain.dtos.req.AppointmentDTO;
 import com.grupo01.clinica.domain.entities.Appointment;
+import com.grupo01.clinica.domain.entities.Prescription;
 import com.grupo01.clinica.domain.entities.User;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public interface AppointmentService {
     List<Appointment>findAll();
     Appointment findById(UUID id);
     void finishAppointment(Appointment appointment);
+    void savePrescriptions(List<Prescription> pres, Appointment appointment);
     //List<Appointment>findAllByUser(User user);
 
 }

@@ -2,11 +2,14 @@ package com.grupo01.clinica.controller;
 
 import com.grupo01.clinica.domain.dtos.req.AppointmentDTO;
 import com.grupo01.clinica.domain.dtos.req.ApprovedAppointmentDTO;
+import com.grupo01.clinica.domain.dtos.req.PrescriptionCreateDTO;
 import com.grupo01.clinica.domain.dtos.res.GeneralResponse;
 import com.grupo01.clinica.domain.entities.Appointment;
+import com.grupo01.clinica.domain.entities.Prescription;
 import com.grupo01.clinica.domain.entities.Role;
 import com.grupo01.clinica.domain.entities.User;
 import com.grupo01.clinica.service.contracts.AppointmentService;
+import com.grupo01.clinica.service.contracts.PrescriptionService;
 import com.grupo01.clinica.service.contracts.RoleService;
 import com.grupo01.clinica.service.contracts.UserService;
 import org.springframework.http.HttpStatus;
@@ -25,11 +28,13 @@ public class AppointmentController {
     private final UserService userService;
     private final AppointmentService appointmentService;
     private final RoleService roleService;
+    private final PrescriptionService prescriptionService;
 
-    public AppointmentController(UserService userService, AppointmentService appointmentService, RoleService roleService) {
+    public AppointmentController(UserService userService, AppointmentService appointmentService, RoleService roleService, PrescriptionService prescriptionService) {
         this.userService = userService;
         this.appointmentService = appointmentService;
         this.roleService = roleService;
+        this.prescriptionService = prescriptionService;
     }
 
     @PostMapping("/create")
@@ -76,4 +81,24 @@ public class AppointmentController {
             return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
         }
     }
+
+    @PostMapping("/clinic/prescription")
+    public ResponseEntity<GeneralResponse>prescriptionAppointment(@RequestBody PrescriptionCreateDTO req){
+        try {
+            Appointment appointment = appointmentService.findById(req.getAppointment());
+            if(appointment == null){
+                return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "Appointment not found!");
+            }
+            List<Prescription>pres= prescriptionService.savePrescriptionList(req.getPrescriptions(), appointment);
+            if(pres.isEmpty()){
+                return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
+            }
+            appointmentService.savePrescriptions(pres, appointment);
+            return GeneralResponse.getResponse(HttpStatus.OK, "Prescription added!");
+        } catch (Exception e) {
+            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
+        }
+
+    }
+
 }
