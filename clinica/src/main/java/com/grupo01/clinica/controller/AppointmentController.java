@@ -102,4 +102,9 @@ public class AppointmentController {
 
     }
 
+    @GetMapping("/own")
+    @PreAuthorize("hasAnyAuthority('PCTE')")
+        public List<Appointment> getPatientAppointments(@RequestParam UUID id, @RequestParam (required = false) String status){
+        return appointmentService.getAppointments(id, status);
+    }
 }
