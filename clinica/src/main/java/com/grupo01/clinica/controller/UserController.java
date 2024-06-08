@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @PostMapping("/config/user-role")
-    @PreAuthorize("hasAnyAuthority('DCTR', 'ASST')")
+    @PreAuthorize("hasAnyAuthority('ADMN')")
     public ResponseEntity<GeneralResponse> updateUserRole(@RequestBody UserRoleDTO userRoleDTO){
         try {
             User user = userService.findByemail(userRoleDTO.getEmail());
