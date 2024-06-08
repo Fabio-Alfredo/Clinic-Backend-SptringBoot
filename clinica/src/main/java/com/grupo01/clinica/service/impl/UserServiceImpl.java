@@ -1,6 +1,7 @@
 package com.grupo01.clinica.service.impl;
 
 import com.grupo01.clinica.domain.dtos.req.UserRegisterDTO;
+import com.grupo01.clinica.domain.entities.Historic;
 import com.grupo01.clinica.domain.entities.Role;
 import com.grupo01.clinica.domain.entities.Token;
 import com.grupo01.clinica.domain.entities.User;
@@ -126,6 +127,12 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsersByRole(List<Role> roles) {
         //return userRepository.findAllByRoles(roles);
         return null;
+    }
+
+    @Override
+    public void updateHistory(User user, Historic history) {
+        user.getHistorics().add(history);
+        userRepository.save(user);
     }
 
     @Override
