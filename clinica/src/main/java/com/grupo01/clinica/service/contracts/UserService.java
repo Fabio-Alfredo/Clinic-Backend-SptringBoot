@@ -1,6 +1,7 @@
 package com.grupo01.clinica.service.contracts;
 
 import com.grupo01.clinica.domain.dtos.req.UserRegisterDTO;
+import com.grupo01.clinica.domain.entities.Historic;
 import com.grupo01.clinica.domain.entities.Role;
 import com.grupo01.clinica.domain.entities.Token;
 import com.grupo01.clinica.domain.entities.User;
@@ -18,7 +19,8 @@ public interface UserService {
     User findUserAuthenticated();
     void createUser(UserRegisterDTO user);
     List<User>getAllUsers();
-    void updateUserRol(User user, String role);
+    void updateUserRol(User user, Role role);
     List<User>getAllUsersByRole(List<Role> roles);
+    void updateHistory(User user, Historic history);
     User findBiId(UUID id);
 }

@@ -1,7 +1,13 @@
 package com.grupo01.clinica.controller;
 
+import com.grupo01.clinica.domain.dtos.req.RecordDTO;
+import com.grupo01.clinica.domain.dtos.req.UserRoleDTO;
 import com.grupo01.clinica.domain.dtos.res.GeneralResponse;
+import com.grupo01.clinica.domain.entities.Historic;
+import com.grupo01.clinica.domain.entities.Role;
 import com.grupo01.clinica.domain.entities.User;
+import com.grupo01.clinica.service.contracts.HistoryService;
+import com.grupo01.clinica.service.contracts.RoleService;
 import com.grupo01.clinica.service.contracts.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +22,13 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+    private final RoleService roleService;
+    private final HistoryService historyService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, RoleService roleService, HistoryService historyService) {
         this.userService = userService;
+        this.roleService = roleService;
+        this.historyService = historyService;
     }
 
     @GetMapping("/all")
@@ -42,6 +52,42 @@ public class UserController {
             return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
         }
     }
+
+    @PostMapping("/updateRole")
+    @PreAuthorize("hasAnyAuthority('ADMN')")
+    public ResponseEntity<GeneralResponse> updateUserRole(@RequestBody UserRoleDTO userRoleDTO){
+        try {
+            User user = userService.findByemail(userRoleDTO.getEmail());
+            if(user == null){
+                return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "User not found!");
+            }
+            Role role = roleService.getRoleById(userRoleDTO.getIdRole());
+            userService.updateUserRol(user,role );
+            return GeneralResponse.getResponse(HttpStatus.OK, "User role updated!");
+        } catch (Exception e){
+            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!" + e.getMessage());
+        }
+    }
+
+    @PostMapping("/record")
+    @PreAuthorize("hasAnyAuthority( 'DCTR', 'ASST')")
+    public  ResponseEntity<GeneralResponse>creteHistory(@RequestBody RecordDTO req){
+        try {
+            User user = userService.findByemail(req.getEmail());
+            if(user == null){
+                return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "User not found!");
+            }
+            Historic historic = historyService.createHistory(req, user);
+            if(historic == null){
+                return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
+            }
+            userService.updateHistory(user, historic);
+            return GeneralResponse.getResponse(HttpStatus.OK, "History created!");
+        } catch (Exception e) {
+            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
+        }
+    }
+
 
 
 

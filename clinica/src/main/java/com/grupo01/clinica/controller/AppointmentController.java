@@ -62,12 +62,18 @@ public class AppointmentController {
         }
     }
 
-    @GetMapping("/accept")
-    public ResponseEntity<GeneralResponse>acceptAppointment(@RequestBody ApprovedAppointmentDTO req){
+    @PostMapping("/end")
+    @PreAuthorize("hasAnyAuthority('ADMN', 'ASST')")
+    public ResponseEntity<GeneralResponse>finishAppointment(@RequestParam("id") UUID id){
         try {
-            return null;
+            Appointment appointment = appointmentService.findById(id);
+            if(appointment == null){
+                return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "Appointment not found!");
+            }
+            appointmentService.finishAppointment(appointment);
+            return GeneralResponse.getResponse(HttpStatus.OK, "Appointment finished!");
         } catch (Exception e) {
-            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!"+e.getMessage());
+            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
         }
     }
 
