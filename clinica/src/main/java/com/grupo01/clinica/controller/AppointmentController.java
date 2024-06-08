@@ -71,9 +71,9 @@ public class AppointmentController {
         }
     }
 
-    @GetMapping("/appointment/own")
+    @GetMapping("/own")
     @PreAuthorize("hasAnyAuthority('PCTE')")
-    public List<Appointment> getPatientAppointments(@RequestParam UUID id, @RequestParam (required = false) String status){
+        public List<Appointment> getPatientAppointments(@RequestParam UUID id, @RequestParam (required = false) String status){
         return appointmentService.getAppointments(id, status);
     }
 }
