@@ -37,7 +37,7 @@ public class AppointmentController {
         this.prescriptionService = prescriptionService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/request")
     public ResponseEntity<GeneralResponse>createAppointment(@RequestBody AppointmentDTO req) {
         try {
 
@@ -67,8 +67,8 @@ public class AppointmentController {
         }
     }
 
-    @PostMapping("/end")
-    @PreAuthorize("hasAnyAuthority('ADMN', 'ASST')")
+    @PostMapping("/finish")
+    @PreAuthorize("hasAnyAuthority('DCTR')")
     public ResponseEntity<GeneralResponse>finishAppointment(@RequestParam("id") UUID id){
         try {
             Appointment appointment = appointmentService.findById(id);
