@@ -58,6 +58,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public void savePrescriptions(List<Prescription> pres, Appointment appointment) {
+
         appointment.setPrescriptions(pres);
         appointmentRepository.save(appointment);
     }

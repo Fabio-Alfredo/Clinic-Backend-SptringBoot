@@ -83,7 +83,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/clinic/prescription")
-    @PreAuthorize("hasAnyAuthority( 'DCTR')")
+//    @PreAuthorize("hasAnyAuthority( 'DCTR')")
     public ResponseEntity<GeneralResponse>prescriptionAppointment(@RequestBody PrescriptionCreateDTO req){
         try {
             Appointment appointment = appointmentService.findById(req.getAppointment());
