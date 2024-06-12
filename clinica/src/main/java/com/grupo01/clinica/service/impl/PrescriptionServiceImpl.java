@@ -41,7 +41,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         for (PrescriptionDTO prescriptionDTO : prescriptions) {
             Prescription prescription = modelMapper.map(prescriptionDTO, Prescription.class);
             prescription.setAppointment(appointment);
-            prescriptionList = Collections.singletonList(prescription);
+            prescriptionList.add(prescription);
         }
         return prescriptionRepository.saveAll(prescriptionList);
     }

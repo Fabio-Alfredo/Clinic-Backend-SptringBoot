@@ -14,8 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -54,7 +53,7 @@ public class UserController {
     }
 
     @PostMapping("/config/user-role")
-    @PreAuthorize("hasAnyAuthority('ADMN')")
+//    @PreAuthorize("hasAnyAuthority('ADMN')")
     public ResponseEntity<GeneralResponse> updateUserRole(@RequestBody UserRoleDTO userRoleDTO){
         try {
             User user = userService.findByemail(userRoleDTO.getEmail());
@@ -92,7 +91,29 @@ public class UserController {
         }
     }
 
+    @PostMapping("/record/get")
+    public ResponseEntity<GeneralResponse> getHistory(
+            @RequestParam(value = "start", required = false) Date startDate,
+            @RequestParam(value = "end", required = false) Date endDate){
+        try {
+            User user = userService.findUserAuthenticated();
 
+            if(user == null){
+                return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "User not found!");
+            }
+
+            List<Historic> historics;
+            if(startDate != null && endDate != null){
+                historics = historyService.findByPatientAndDateRange(user, startDate, endDate);
+            } else {
+                historics = user.getHistorics();
+            }
+            historics.sort(Comparator.comparing(Historic::getDate).reversed());
+            return GeneralResponse.getResponse(HttpStatus.OK, historics);
+        } catch (Exception e) {
+            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!" + e.getMessage());
+        }
+    }
 
 
 }

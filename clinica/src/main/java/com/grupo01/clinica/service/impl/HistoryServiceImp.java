@@ -8,6 +8,7 @@ import com.grupo01.clinica.service.contracts.HistoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,6 +24,7 @@ public class HistoryServiceImp implements HistoryService {
     @Override
     public Historic createHistory(RecordDTO req, User user) {
         Historic historic = modelMapper.map(req, Historic.class);
+        historic.setDate(new Date().from(new Date().toInstant()));
         historic.setUser(user);
         return historyRepository.save(historic);
     }
@@ -30,6 +32,11 @@ public class HistoryServiceImp implements HistoryService {
     @Override
     public List<Historic> allHistory() {
         return historyRepository.findAll();
+    }
+
+    @Override
+    public List<Historic> findByPatientAndDateRange( User user, Date start, Date end) {
+        return historyRepository.findAllByUserAndDateBetween(user, start, end);
     }
 
 

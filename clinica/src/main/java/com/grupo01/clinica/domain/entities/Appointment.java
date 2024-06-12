@@ -17,11 +17,11 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String reason;
-    private Date d_realization;
-    private Date d_finalization;
-    private Date d_request;
+    private Date realization;
+    private Date finalization;
+    private Date request;
     private String status;
-    private Date d_scheduling;
+    private Date scheduling;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;

@@ -4,10 +4,8 @@ import com.grupo01.clinica.domain.dtos.req.AppointmentDTO;
 import com.grupo01.clinica.domain.dtos.req.ApprovedAppointmentDTO;
 import com.grupo01.clinica.domain.dtos.req.PrescriptionCreateDTO;
 import com.grupo01.clinica.domain.dtos.res.GeneralResponse;
-import com.grupo01.clinica.domain.entities.Appointment;
-import com.grupo01.clinica.domain.entities.Prescription;
-import com.grupo01.clinica.domain.entities.Role;
-import com.grupo01.clinica.domain.entities.User;
+import com.grupo01.clinica.domain.dtos.res.LisAppointments;
+import com.grupo01.clinica.domain.entities.*;
 import com.grupo01.clinica.service.contracts.AppointmentService;
 import com.grupo01.clinica.service.contracts.PrescriptionService;
 import com.grupo01.clinica.service.contracts.RoleService;
@@ -18,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -106,5 +105,31 @@ public class AppointmentController {
     @PreAuthorize("hasAnyAuthority('PCTE')")
         public List<Appointment> getPatientAppointments(@RequestParam UUID id, @RequestParam (required = false) String status){
         return appointmentService.getAppointments(id, status);
+    }
+
+    @GetMapping("/clinic/schedule")
+    public List<Appointment> getDoctorAppointments(@RequestParam("id") Date fecha){
+        List<Appointment> appointments = appointmentService.findByD_realizationIn(fecha);
+        List<LisAppointments> res = new ArrayList<>();
+
+
+        for (Appointment appointment : appointments) {
+            LisAppointments lisAppointments = new LisAppointments();
+            lisAppointments.setAppointments(appointment);
+            lisAppointments.setPatient(appointment.getUser());
+            lisAppointments.setHistorics(appointment.getUser().getHistorics());
+            List<Attends> attends = appointment.getAttends();
+            List<User> docts = new ArrayList<>();
+            for (Attends attend : attends) {
+                if(attend.getUser().getRoles().contains("DCTR")){
+                    docts.add(attend.getUser());
+                }
+            }
+            lisAppointments.setDoctors(docts);
+            res.add(lisAppointments);
+        }
+
+
+        return null;
     }
 }

@@ -32,7 +32,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void createAppointment(AppointmentDTO req, User user){
         Appointment appointment = modelMapper.map(req, Appointment.class);
-        appointment.setD_realization(Date.from(Instant.now()));
+        appointment.setRealization(Date.from(Instant.now()));
         appointment.setUser(user);
         appointment.setStatus("PENDING");
         appointmentRepository.save(appointment);
@@ -52,7 +52,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void finishAppointment(Appointment appointment) {
         appointment.setStatus("FINISHED");
-        appointment.setD_finalization(Date.from(Instant.now()));
+        appointment.setFinalization(Date.from(Instant.now()));
         appointmentRepository.save(appointment);
     }
 
@@ -62,6 +62,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setPrescriptions(pres);
         appointmentRepository.save(appointment);
     }
+
+
 
     @Override
     public List<Appointment> getAppointments(UUID id, String status) {
@@ -75,5 +77,10 @@ public class AppointmentServiceImpl implements AppointmentService {
                 return null;
             }
         }
+    }
+
+    @Override
+    public List<Appointment> findByD_realizationIn(Date realization) {
+        return appointmentRepository.findAppointmentsByRealization(realization);
     }
 }

@@ -61,7 +61,9 @@ public class JWTTokenFilter extends OncePerRequestFilter {
                 if(tokenValidity) {
                     //Preparing the authentication token.
                     UsernamePasswordAuthenticationToken authToken
-                            = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                            = new UsernamePasswordAuthenticationToken(user.getEmail(), null, user.getAuthorities());
+
+                    authToken.setDetails(email);
 
                     authToken.setDetails(
                             new WebAuthenticationDetailsSource().buildDetails(request)
@@ -71,6 +73,7 @@ public class JWTTokenFilter extends OncePerRequestFilter {
                     SecurityContextHolder
                             .getContext()
                             .setAuthentication(authToken);
+
                 }
             }
         }
