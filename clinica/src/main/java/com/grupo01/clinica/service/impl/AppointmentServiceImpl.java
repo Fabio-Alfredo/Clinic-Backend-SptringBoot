@@ -79,8 +79,13 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
     }
 
-    @Override
-    public List<Appointment> findByD_realizationIn(Date realization) {
-        return appointmentRepository.findAppointmentsByRealization(realization);
-    }
+//    @Override
+//    public List<Appointment> findByD_realizationIn(Date realization) {
+//        return appointmentRepository.findAppointmentsByRealization(realization);
+//    }
+//
+//    @Override
+//    public List<Appointment> findByUserAndRealization(User user, Date realization) {
+//        return appointmentRepository.findAppointmentsByUserAndRealization(user, realization);
+//    }
 }

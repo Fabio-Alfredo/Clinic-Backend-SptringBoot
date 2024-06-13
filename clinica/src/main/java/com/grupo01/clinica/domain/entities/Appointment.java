@@ -31,7 +31,6 @@ public class Appointment {
     private List<Attends> attends;
 
     @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY)
-    @JsonIgnore
     private List<Prescription> prescriptions;
 
 }

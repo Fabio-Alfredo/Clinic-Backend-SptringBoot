@@ -22,7 +22,8 @@ public interface AppointmentService {
     List<Appointment> getAppointments(UUID id, String status);
     void finishAppointment(Appointment appointment);
     void savePrescriptions(List<Prescription> pres, Appointment appointment);
-    List<Appointment> findByD_realizationIn(Date realization);
+//    List<Appointment> findByD_realizationIn(Date realization);
+//    List<Appointment>findByUserAndRealization(User user, Date realization);
     //List<Appointment>findAllByUser(User user);
 
 

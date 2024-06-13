@@ -6,10 +6,7 @@ import com.grupo01.clinica.domain.dtos.req.PrescriptionCreateDTO;
 import com.grupo01.clinica.domain.dtos.res.GeneralResponse;
 import com.grupo01.clinica.domain.dtos.res.LisAppointments;
 import com.grupo01.clinica.domain.entities.*;
-import com.grupo01.clinica.service.contracts.AppointmentService;
-import com.grupo01.clinica.service.contracts.PrescriptionService;
-import com.grupo01.clinica.service.contracts.RoleService;
-import com.grupo01.clinica.service.contracts.UserService;
+import com.grupo01.clinica.service.contracts.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,12 +25,14 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
     private final RoleService roleService;
     private final PrescriptionService prescriptionService;
+    private final AttendsService attendsService;
 
-    public AppointmentController(UserService userService, AppointmentService appointmentService, RoleService roleService, PrescriptionService prescriptionService) {
+    public AppointmentController(UserService userService, AppointmentService appointmentService, RoleService roleService, PrescriptionService prescriptionService, AttendsService attendsService) {
         this.userService = userService;
         this.appointmentService = appointmentService;
         this.roleService = roleService;
         this.prescriptionService = prescriptionService;
+        this.attendsService = attendsService;
     }
 
     @PostMapping("/request")
@@ -103,33 +102,51 @@ public class AppointmentController {
 
     @GetMapping("/own")
     @PreAuthorize("hasAnyAuthority('PCTE')")
-        public List<Appointment> getPatientAppointments(@RequestParam UUID id, @RequestParam (required = false) String status){
-        return appointmentService.getAppointments(id, status);
+        public List<Appointment> getPatientAppointments( @RequestParam (required = false) String status){
+        User user = userService.findUserAuthenticated();
+        return appointmentService.getAppointments(user.getId(), status);
     }
+
+//    @GetMapping("/clinic/schedule")
+//    public List<Appointment> getDoctorAppointments(@RequestParam("id") Date fecha){
+//        List<Appointment> appointments = appointmentService.findByD_realizationIn(fecha);
+//        List<LisAppointments> res = new ArrayList<>();
+//
+//
+//        for (Appointment appointment : appointments) {
+//            LisAppointments lisAppointments = new LisAppointments();
+//            lisAppointments.setAppointments(appointment);
+//            lisAppointments.setPatient(appointment.getUser());
+//            lisAppointments.setHistorics(appointment.getUser().getHistorics());
+//            List<Attends> attends = appointment.getAttends();
+//            List<User> docts = new ArrayList<>();
+//            for (Attends attend : attends) {
+//                if(attend.getUser().getRoles().contains("DCTR")){
+//                    docts.add(attend.getUser());
+//                }
+//            }
+//            lisAppointments.setDoctors(docts);
+//            res.add(lisAppointments);
+//        }
+//
+//
+//        return null;
+//    }
 
     @GetMapping("/clinic/schedule")
-    public List<Appointment> getDoctorAppointments(@RequestParam("id") Date fecha){
-        List<Appointment> appointments = appointmentService.findByD_realizationIn(fecha);
-        List<LisAppointments> res = new ArrayList<>();
-
-
-        for (Appointment appointment : appointments) {
-            LisAppointments lisAppointments = new LisAppointments();
-            lisAppointments.setAppointments(appointment);
-            lisAppointments.setPatient(appointment.getUser());
-            lisAppointments.setHistorics(appointment.getUser().getHistorics());
-            List<Attends> attends = appointment.getAttends();
-            List<User> docts = new ArrayList<>();
-            for (Attends attend : attends) {
-                if(attend.getUser().getRoles().contains("DCTR")){
-                    docts.add(attend.getUser());
-                }
+    public ResponseEntity<GeneralResponse> getDoctorAppointments(@RequestParam("date") Date date){
+        try {
+            User user = userService.findUserAuthenticated();
+            if(user == null){
+                return GeneralResponse.getResponse(HttpStatus.UNAUTHORIZED, "User not found!");
             }
-            lisAppointments.setDoctors(docts);
-            res.add(lisAppointments);
+            List<Attends> attends = attendsService.fidAllUserAndAppointmentRealization(user, date);
+
+            return GeneralResponse.getResponse(HttpStatus.OK, attends);
+        }catch (Exception e){
+            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
         }
-
-
-        return null;
     }
+
+
 }
