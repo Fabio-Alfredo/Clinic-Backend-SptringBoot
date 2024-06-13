@@ -57,6 +57,7 @@ public class PrescriptionController {
     public ResponseEntity<GeneralResponse> getPrescription(@RequestParam("id") UUID id){
         try {
             User user = userService.findBiId(id);
+            User doc = userService.findUserAuthenticated();
             Date currentDate = new Date();
 
             if(user == null){
@@ -65,6 +66,7 @@ public class PrescriptionController {
             List<Appointment> appointments = user.getAppointments();
             List<Prescription>res = new ArrayList<>();
             for (Appointment appointment : appointments) {
+
                 List<Prescription>prescriptions = appointment.getPrescriptions();
                 for (Prescription prescription : prescriptions) {
                     if(currentDate.before(prescription.getD_finalization())){

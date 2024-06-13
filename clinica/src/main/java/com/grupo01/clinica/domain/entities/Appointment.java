@@ -3,10 +3,12 @@ package com.grupo01.clinica.domain.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.BinaryOperator;
 
 @Entity
 @Data
@@ -21,7 +23,14 @@ public class Appointment {
     private Date finalization;
     private Date request;
     private String status;
-    private Date scheduling;
+    private boolean isAccepted;
+    private Date schedulEndDate;
+
+    @ColumnDefault(value = "false")
+    @JsonIgnore
+    private Boolean accepted;
+
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;

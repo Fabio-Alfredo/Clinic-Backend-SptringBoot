@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface AttendsService {
     List<Attends>fidAllUserAndAppointmentRealization(User user, Date realization);
+    List<Attends>findAllUserAndAppointmentDate(User user, Date start, Date end);
+    void saveAttend(Attends attend);
 }

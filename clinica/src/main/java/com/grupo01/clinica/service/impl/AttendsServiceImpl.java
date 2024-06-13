@@ -24,4 +24,14 @@ public class AttendsServiceImpl implements AttendsService {
     public List<Attends> fidAllUserAndAppointmentRealization(User user, Date realization) {
         return attendsRepository.findAllByUserAndAppointmentRealization(user, realization);
     }
+
+    @Override
+    public List<Attends> findAllUserAndAppointmentDate(User user, Date start, Date end) {
+        return attendsRepository.findAllByUserAndAppointmentRealizationBetween(user, start, end);
+    }
+
+    @Override
+    public void saveAttend(Attends attend) {
+        attendsRepository.save(attend);
+    }
 }

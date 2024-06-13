@@ -12,4 +12,5 @@ public interface HistoryService {
     Historic createHistory(RecordDTO req, User user);
     List<Historic> allHistory();
     List<Historic> findByPatientAndDateRange(User user, Date start, Date end);
+    List<Historic>findByPatient(User user);
 }

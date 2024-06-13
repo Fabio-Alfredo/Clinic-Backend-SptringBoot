@@ -14,14 +14,18 @@ import java.util.UUID;
 public interface AppointmentService {
     void createAppointment(AppointmentDTO req, User user);
     List<Appointment>findAll();
+    boolean isDoctorAndAvailable(User doctor,Date startDate, Date endDate);
   
+    Appointment findByIdAndDoc(UUID id, User user);
     Appointment findById(UUID id);
+    boolean isDoctorAndAppointment(User doctor, Appointment appointment);
 
     //void updateStatus(List<User> doctors, Appointment appointment, String status);
 
     List<Appointment> getAppointments(UUID id, String status);
     void finishAppointment(Appointment appointment);
     void savePrescriptions(List<Prescription> pres, Appointment appointment);
+    void saveAppointment(Appointment appointment);
 //    List<Appointment> findByD_realizationIn(Date realization);
 //    List<Appointment>findByUserAndRealization(User user, Date realization);
     //List<Appointment>findAllByUser(User user);

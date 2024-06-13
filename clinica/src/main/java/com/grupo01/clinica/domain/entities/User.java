@@ -53,6 +53,7 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<Appointment> appointments;
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority>authorities = new ArrayList<>();

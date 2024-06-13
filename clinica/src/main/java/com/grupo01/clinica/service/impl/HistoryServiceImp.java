@@ -39,5 +39,10 @@ public class HistoryServiceImp implements HistoryService {
         return historyRepository.findAllByUserAndDateBetween(user, start, end);
     }
 
+    @Override
+    public List<Historic> findByPatient(User user) {
+        return historyRepository.findAllByUser(user);
+    }
+
 
 }

@@ -13,4 +13,5 @@ import java.util.UUID;
 @Repository
 public interface HistoryRepository extends JpaRepository<Historic, UUID> {
     List<Historic>findAllByUserAndDateBetween(User user, Date start, Date end);
+    List<Historic>findAllByUser(User user);
 }
