@@ -90,6 +90,11 @@ public class AppointmentServiceImpl implements AppointmentService {
         return isDoctor;
     }
 
+    @Override
+    public List<Appointment> findAllByStatus(String status) {
+        return appointmentRepository.findAllByStatus(status);
+    }
+
 
     @Override
     public void finishAppointment(Appointment appointment) {

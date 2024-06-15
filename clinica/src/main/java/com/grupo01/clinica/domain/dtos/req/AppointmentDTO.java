@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 public class AppointmentDTO {
 
-    @NotBlank
+    @NotBlank(message = "Ingrese el motivo de su consulta")
     private String reason;
     private Date request;
 }

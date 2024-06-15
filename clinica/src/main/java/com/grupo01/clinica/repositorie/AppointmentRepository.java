@@ -18,6 +18,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID>{
         List<Appointment> findByUser(User user);
         Optional <Appointment> findByIdAndUser(UUID id, User user);
         List<Appointment> findAllByAcceptedAndAttendsContaining(Boolean accepted, Attends attends);
+        List<Appointment>findAllByStatus(String status);
         
 //       List<Appointment> findAppointmentsByUserAndRealization(User user, Date realization);
 }

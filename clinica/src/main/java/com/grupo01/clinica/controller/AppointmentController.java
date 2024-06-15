@@ -53,6 +53,16 @@ public class AppointmentController {
         }
     }
 
+    @GetMapping("/pending")
+    public ResponseEntity<GeneralResponse>getPendingAppointments(){
+        try {
+            List<Appointment> res = appointmentService.findAllByStatus("PENDING");
+            return GeneralResponse.getResponse(HttpStatus.OK, res);
+        } catch (Exception e) {
+            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
+        }
+    }
+
     @GetMapping("/all")
     @PreAuthorize("hasAnyAuthority('ADMN', 'ASST')")
     public ResponseEntity<GeneralResponse>getAllAppointments(){

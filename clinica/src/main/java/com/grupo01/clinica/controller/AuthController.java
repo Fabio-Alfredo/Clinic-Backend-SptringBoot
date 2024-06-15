@@ -34,11 +34,11 @@ public class AuthController {
             //System.out.println(user);
             if (user == null)
             {
-                return GeneralResponse.getResponse(HttpStatus.UNAUTHORIZED, "User not found! 1");
+                return GeneralResponse.getResponse(HttpStatus.UNAUTHORIZED, "User not found! ");
             }
 
             if (!userService.isPasswordOk(user, info.getPassword())){
-                return GeneralResponse.getResponse(HttpStatus.UNAUTHORIZED, "User not found! 2");
+                return GeneralResponse.getResponse(HttpStatus.UNAUTHORIZED, "User not found! ");
             }
             //System.out.println("User: " + user);       //esto mata la aplicacion da una recursion circular infinita
 //            Token token = userService.registerToken(user);

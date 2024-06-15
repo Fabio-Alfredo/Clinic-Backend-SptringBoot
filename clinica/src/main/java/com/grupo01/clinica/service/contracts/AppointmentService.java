@@ -19,7 +19,7 @@ public interface AppointmentService {
     Appointment findByIdAndDoc(UUID id, User user);
     Appointment findById(UUID id);
     boolean isDoctorAndAppointment(User doctor, Appointment appointment);
-
+    List<Appointment> findAllByStatus(String status);
     //void updateStatus(List<User> doctors, Appointment appointment, String status);
 
     List<Appointment> getAppointments(User user, String status);
