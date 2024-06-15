@@ -116,9 +116,10 @@ public class AppointmentController {
 
     @GetMapping("/own")
     @PreAuthorize("hasAnyAuthority('PCTE')")
-        public List<Appointment> getPatientAppointments( @RequestParam (required = false) String status){
+        public List<Appointment> getPatientAppointments( @RequestParam (required = false, name = "phase") String phase){
+
         User user = userService.findUserAuthenticated();
-        return appointmentService.getAppointments(user.getId(), status);
+        return appointmentService.getAppointments(user, phase);
     }
 
 //    @GetMapping("/clinic/schedule")
@@ -210,7 +211,7 @@ public class AppointmentController {
                 return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "User not found!");
             }
             if(!req.getIsAccepted()){
-                appointment.setStatus("Denied");
+                appointment.setStatus("DENIED");
                 appointmentService.saveAppointment(appointment);
 
                 return GeneralResponse.getResponse(HttpStatus.FOUND, "Appointment not accepted!");
@@ -222,7 +223,7 @@ public class AppointmentController {
             appointment.setFinalization(estimated);
             appointment.setRealization(req.getRealization());
             appointment.setSchedulEndDate(req.getSchedulEndDate());
-            appointment.setStatus("Approved");
+                appointment.setStatus("APPROVED");
 
             Role role = roleService.getRoleById("PCTE");
             if (role == null){

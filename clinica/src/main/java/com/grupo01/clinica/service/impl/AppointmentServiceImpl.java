@@ -112,11 +112,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 
     @Override
-    public List<Appointment> getAppointments(UUID id, String status) {
+    public List<Appointment> getAppointments(User user, String status) {
         if(status != null && !status.isEmpty()){
-            return appointmentRepository.findByIdAndStatus(id, status);
+            return appointmentRepository.findByUserAndStatus(user, status);
         }else {
-            User user = userRepository.findById(id).orElse(null);
+//            User myuser = userRepository.findById(user.getId()).orElse(null);
             if(user != null){
                 return appointmentRepository.findByUser(user);
             }else {

@@ -14,7 +14,7 @@ import java.util.UUID;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, UUID>{
 
-        List<Appointment> findByIdAndStatus(UUID id, String status);
+        List<Appointment> findByUserAndStatus(User user, String status);
         List<Appointment> findByUser(User user);
         Optional <Appointment> findByIdAndUser(UUID id, User user);
         List<Appointment> findAllByAcceptedAndAttendsContaining(Boolean accepted, Attends attends);

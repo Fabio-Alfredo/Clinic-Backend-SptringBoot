@@ -22,7 +22,7 @@ public interface AppointmentService {
 
     //void updateStatus(List<User> doctors, Appointment appointment, String status);
 
-    List<Appointment> getAppointments(UUID id, String status);
+    List<Appointment> getAppointments(User user, String status);
     void finishAppointment(Appointment appointment);
     void savePrescriptions(List<Prescription> pres, Appointment appointment);
     void saveAppointment(Appointment appointment);
