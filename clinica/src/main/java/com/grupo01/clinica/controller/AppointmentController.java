@@ -6,6 +6,7 @@ import com.grupo01.clinica.domain.dtos.req.PrescriptionCreateDTO;
 import com.grupo01.clinica.domain.dtos.res.*;
 import com.grupo01.clinica.domain.entities.*;
 import com.grupo01.clinica.service.contracts.*;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,7 +38,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/request")
-    public ResponseEntity<GeneralResponse>createAppointment(@RequestBody AppointmentDTO req) {
+    public ResponseEntity<GeneralResponse>createAppointment(@RequestBody @Valid AppointmentDTO req) {
         try {
             User user = userService.findUserAuthenticated();
             if (user == null) {
@@ -45,7 +46,7 @@ public class AppointmentController {
             }
             appointmentService.createAppointment(req, user);
 
-            return GeneralResponse.getResponse(HttpStatus.OK, "Appointment created!");
+            return GeneralResponse.getResponse(HttpStatus.OK, "Cita agendada con exito!");
 
         } catch (Exception e) {
             return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
@@ -116,10 +117,13 @@ public class AppointmentController {
 
     @GetMapping("/own")
     @PreAuthorize("hasAnyAuthority('PCTE')")
-        public List<Appointment> getPatientAppointments( @RequestParam (required = false, name = "phase") String phase){
-
-        User user = userService.findUserAuthenticated();
-        return appointmentService.getAppointments(user, phase);
+        public ResponseEntity<GeneralResponse> getPatientAppointments( @RequestParam (required = false, name = "phase") String phase){
+        try {
+            User user = userService.findUserAuthenticated();
+            return GeneralResponse.getResponse(HttpStatus.OK, appointmentService.getAppointments(user, phase));
+        }catch (Exception e) {
+            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
+        }
     }
 
 //    @GetMapping("/clinic/schedule")
