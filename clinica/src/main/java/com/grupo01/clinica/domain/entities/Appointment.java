@@ -19,6 +19,7 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String reason;
+
     private Date realization;
     private Date finalization;
     private Date request;

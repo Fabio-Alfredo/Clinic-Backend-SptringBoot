@@ -39,7 +39,7 @@ public class AppointmentController {
     @PostMapping("/request")
     public ResponseEntity<GeneralResponse>createAppointment(@RequestBody AppointmentDTO req) {
         try {
-            User user = userService.findByemail(req.getEmail());
+            User user = userService.findUserAuthenticated();
             if (user == null) {
                 return GeneralResponse.getResponse(HttpStatus.FOUND, "User not found!");
             }

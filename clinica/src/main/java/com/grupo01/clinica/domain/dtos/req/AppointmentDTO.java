@@ -8,5 +8,4 @@ import java.util.UUID;
 @Data
 public class AppointmentDTO {
     private String reason;
-    private String email;
 }
