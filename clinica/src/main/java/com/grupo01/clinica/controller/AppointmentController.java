@@ -136,31 +136,23 @@ public class AppointmentController {
         }
     }
 
-//    @GetMapping("/clinic/schedule")
-//    public List<Appointment> getDoctorAppointments(@RequestParam("id") Date fecha){
-//        List<Appointment> appointments = appointmentService.findByD_realizationIn(fecha);
-//        List<LisAppointments> res = new ArrayList<>();
-//
-//
-//        for (Appointment appointment : appointments) {
-//            LisAppointments lisAppointments = new LisAppointments();
-//            lisAppointments.setAppointments(appointment);
-//            lisAppointments.setPatient(appointment.getUser());
-//            lisAppointments.setHistorics(appointment.getUser().getHistorics());
-//            List<Attends> attends = appointment.getAttends();
-//            List<User> docts = new ArrayList<>();
-//            for (Attends attend : attends) {
-//                if(attend.getUser().getRoles().contains("DCTR")){
-//                    docts.add(attend.getUser());
-//                }
-//            }
-//            lisAppointments.setDoctors(docts);
-//            res.add(lisAppointments);
-//        }
-//
-//
-//        return null;
-//    }
+    @GetMapping("/clinic/denied")
+    public ResponseEntity<GeneralResponse> deniedAppointment(@RequestParam("id") UUID id){
+        try {
+            Appointment appointment = appointmentService.findById(id);
+            if(appointment == null){
+                return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "Appointment not found!");
+            }
+            if(!appointment.getStatus().equals("PENDING")){
+                return GeneralResponse.getResponse(HttpStatus.FOUND, "Appointment already denied or approved!");
+            }
+            appointment.setStatus("DENIED");
+            appointmentService.saveAppointment(appointment);
+            return GeneralResponse.getResponse(HttpStatus.OK, "Appointment denied!");
+        } catch (Exception e) {
+            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
+        }
+    }
 
     @GetMapping("/clinic/schedule")
     public ResponseEntity<GeneralResponse> getDoctorAppointments(@RequestParam("date") String date){
@@ -230,22 +222,21 @@ public class AppointmentController {
 
                 return GeneralResponse.getResponse(HttpStatus.FOUND, "Appointment not accepted!");
             }
-            System.out.println(req.getRealization());
-            System.out.println(req.getDuration() * 60000L);
+
             Date estimated = new Date(req.getRealization().getTime()+req.getDuration() * 60000L);
             appointment.setAccepted(req.getIsAccepted());
             appointment.setFinalization(estimated);
             appointment.setRealization(req.getRealization());
             appointment.setSchedulEndDate(req.getSchedulEndDate());
-                appointment.setStatus("APPROVED");
+            appointment.setStatus("APPROVED");
 
             Role role = roleService.getRoleById("PCTE");
             if (role == null){
                 return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "Role not found!");
             }
             userService.updateUserRol(paciente, role);
-            for (UUID doctorId: req.getDoctorId()){
-                User doctor = userService.findBiId(doctorId);
+            for (String doctorEmail: req.getDoctorEmail()){
+                User doctor = userService.findByemail(doctorEmail);
 
                 Role roleDoctor = roleService.getRoleById("DCTR");
 
@@ -273,7 +264,7 @@ public class AppointmentController {
             return GeneralResponse.getResponse(HttpStatus.OK, "Appointment approved!");
 
         } catch (Exception e) {
-            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
+            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!" + e.getMessage());
         }
     }
 

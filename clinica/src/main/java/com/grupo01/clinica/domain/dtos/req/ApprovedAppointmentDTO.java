@@ -20,6 +20,6 @@ public class ApprovedAppointmentDTO {
     private int duration;
     private UUID appointmentId;
     private List<String> specialists;
-    private List<UUID> doctorId;
+    private List<String> doctorEmail;
 
 }
