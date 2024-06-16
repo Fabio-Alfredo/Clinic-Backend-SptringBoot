@@ -1,10 +1,7 @@
 package com.grupo01.clinica.service.contracts;
 
 import com.grupo01.clinica.domain.dtos.req.UserRegisterDTO;
-import com.grupo01.clinica.domain.entities.Historic;
-import com.grupo01.clinica.domain.entities.Role;
-import com.grupo01.clinica.domain.entities.Token;
-import com.grupo01.clinica.domain.entities.User;
+import com.grupo01.clinica.domain.entities.*;
 
 import java.util.List;
 import java.util.UUID;

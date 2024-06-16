@@ -110,9 +110,9 @@ public class AppointmentController {
                 return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "Appointment not found!");
             }
             //Validar si el user es el doctor de la cita
-            if(!appointmentService.isDoctorAndAppointment(doc, appointment)){
-                return GeneralResponse.getResponse(HttpStatus.UNAUTHORIZED, "Unauthorized!");
-            }
+//            if(!appointmentService.isDoctorAndAppointment(doc, appointment)){
+//                return GeneralResponse.getResponse(HttpStatus.UNAUTHORIZED, "Unauthorized!");
+//            }
             List<Prescription>pres= prescriptionService.savePrescriptionList(req.getPrescriptions(), appointment);
             if(pres.isEmpty()){
                 return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
