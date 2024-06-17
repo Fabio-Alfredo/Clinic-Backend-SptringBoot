@@ -160,6 +160,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/clinic/schedule")
+    @PreAuthorize("hasAnyAuthority('DCTR')")
     public ResponseEntity<GeneralResponse> getDoctorAppointments(@RequestParam("date") String date){
         try {
 
@@ -210,7 +211,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/approve")
-//    @PreAuthorize("hasAnyAuthority('ADMN', 'ASST')")
+    @PreAuthorize("hasAnyAuthority('ASST')")
     public ResponseEntity<GeneralResponse>approveAppointment(@RequestBody ApprovedAppointmentDTO  req){
         try {
             Appointment appointment = appointmentService.findById(req.getAppointmentId());
