@@ -24,7 +24,7 @@ public class HistoryServiceImp implements HistoryService {
     @Override
     public Historic createHistory(RecordDTO req, User user) {
         Historic historic = modelMapper.map(req, Historic.class);
-        historic.setDate(new Date().from(new Date().toInstant()));
+        historic.setCreteAt(new Date().from(new Date().toInstant()));
         historic.setUser(user);
         return historyRepository.save(historic);
     }
@@ -36,7 +36,7 @@ public class HistoryServiceImp implements HistoryService {
 
     @Override
     public List<Historic> findByPatientAndDateRange( User user, Date start, Date end) {
-        return historyRepository.findAllByUserAndDateBetween(user, start, end);
+        return historyRepository.findAllByUserAndCreteAtBetween(user, start, end);
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.UUID;
 @Table(name="historic")
 public class Historic {
 
-    private Date date;
+    private Date creteAt;
     private String reason;
 
     @Id
@@ -20,6 +20,4 @@ public class Historic {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
-
-
 }

@@ -198,7 +198,7 @@ public class AppointmentController {
                 appointmentDoctorDTO.setDoctors(doctors);
 
                 List<Historic> userHistory = historyService.findByPatient(a.getAppointment().getUser());
-                userHistory.sort(Comparator.comparing(Historic::getDate).reversed());
+                userHistory.sort(Comparator.comparing(Historic::getCreteAt).reversed());
                 appointmentDoctorDTO.setHistorics(userHistory);
                 attendsResponseDTO.setAppointments(appointmentDoctorDTO);
                 schedule.add(attendsResponseDTO);

@@ -14,7 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.Arrays.stream;
 
 @RestController
 @RequestMapping("/api/user")
@@ -97,18 +101,20 @@ public class UserController {
             @RequestParam(value = "end", required = false) Date endDate){
         try {
             User user = userService.findUserAuthenticated();
-
             if(user == null){
                 return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "User not found!");
             }
 
             List<Historic> historics;
             if(startDate != null && endDate != null){
+                endDate.setTime(endDate.getTime() + 82800000);
+                System.out.println("End"+endDate);
                 historics = historyService.findByPatientAndDateRange(user, startDate, endDate);
             } else {
                 historics = user.getHistorics();
             }
-            historics.sort(Comparator.comparing(Historic::getDate).reversed());
+
+            historics.sort(Comparator.comparing(Historic::getCreteAt).reversed());
             return GeneralResponse.getResponse(HttpStatus.OK, historics);
         } catch (Exception e) {
             return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!" + e.getMessage());
