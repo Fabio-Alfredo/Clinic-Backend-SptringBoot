@@ -87,14 +87,19 @@ public class AppointmentController {
             if(appointment == null){
                 return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "Appointment not found!");
             }
-
+            List<Attends> attends = appointment.getAttends();
+            for(Attends a: attends){
+                if(a.getUser().getId().equals(user.getId()) && appointment.getStatus().equals("APPROVED") && appointment.equals(a.getAppointment())){
+                    appointmentService.finishAppointment(appointment);
+                    return GeneralResponse.getResponse(HttpStatus.OK, "Appointment finished!");
+                }
+            }
             //valida si el doctor es el doctor de la cita
 //            if(!appointmentService.isDoctorAndAppointment(user, appointment)){
 //                return GeneralResponse.getResponse(HttpStatus.UNAUTHORIZED, "Unauthorized!");
 //            }
 
-            appointmentService.finishAppointment(appointment);
-            return GeneralResponse.getResponse(HttpStatus.OK, "Appointment finished!");
+            return GeneralResponse.getResponse(HttpStatus.FOUND, "Error appointment finished!");
         } catch (Exception e) {
             return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
         }
