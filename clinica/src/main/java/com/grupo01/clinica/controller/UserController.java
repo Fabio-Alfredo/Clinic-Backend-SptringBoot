@@ -95,7 +95,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/record/get")
+    @GetMapping("/record/get")
     public ResponseEntity<GeneralResponse> getHistory(
             @RequestParam(value = "start", required = false) Date startDate,
             @RequestParam(value = "end", required = false) Date endDate){
