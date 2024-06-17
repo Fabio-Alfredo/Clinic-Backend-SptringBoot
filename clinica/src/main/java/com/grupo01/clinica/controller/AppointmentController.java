@@ -289,7 +289,19 @@ public class AppointmentController {
     @PreAuthorize("hasAnyAuthority('DCTR')")
     public ResponseEntity<GeneralResponse> getAppointmentApproved(){
         try {
-            List<AppointmentResponseDTO> res = appointmentService.findAllApproved();
+            User doc = userService.findUserAuthenticated();
+            if(doc == null){
+                return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "User not found!");
+            }
+            List<Attends> attends = attendsService.findAllUser(doc);
+            List<Appointment>res = new ArrayList<>();
+            for (Attends a: attends){
+                Appointment appointment =a.getAppointment();
+                if(appointment.getStatus().equals("APPROVED")){
+                    res.add(appointment);
+                }
+            }
+
             return GeneralResponse.getResponse(HttpStatus.OK, res);
         } catch (Exception e) {
             return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");

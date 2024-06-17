@@ -13,4 +13,5 @@ import java.util.UUID;
 public interface AttendsRepository extends JpaRepository<Attends, UUID> {
     List<Attends> findAllByUserAndAppointmentRealization(User user, Date realization);
     List<Attends>findAllByUserAndAppointmentRealizationBetween(User user, Date star, Date end);
+    List<Attends>findAllByUser(User user);
 }

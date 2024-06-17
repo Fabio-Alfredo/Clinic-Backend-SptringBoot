@@ -31,6 +31,11 @@ public class AttendsServiceImpl implements AttendsService {
     }
 
     @Override
+    public List<Attends> findAllUser(User doc) {
+        return attendsRepository.findAllByUser(doc);
+    }
+
+    @Override
     public void saveAttend(Attends attend) {
         attendsRepository.save(attend);
     }

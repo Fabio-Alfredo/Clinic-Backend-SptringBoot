@@ -37,7 +37,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void createAppointment(AppointmentDTO req, User user){
         Appointment appointment = modelMapper.map(req, Appointment.class);
-        appointment.setRequest(req.getRequest());
         appointment.setUser(user);
         appointment.setStatus("PENDING");
         appointmentRepository.save(appointment);
