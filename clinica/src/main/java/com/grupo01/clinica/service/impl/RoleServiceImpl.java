@@ -1,6 +1,7 @@
 package com.grupo01.clinica.service.impl;
 
 import com.grupo01.clinica.domain.entities.Role;
+import com.grupo01.clinica.domain.entities.User;
 import com.grupo01.clinica.repositorie.RoleRepository;
 import com.grupo01.clinica.service.contracts.RoleService;
 import org.springframework.stereotype.Service;

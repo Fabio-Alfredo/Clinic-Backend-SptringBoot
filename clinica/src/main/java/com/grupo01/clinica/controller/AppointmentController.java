@@ -200,7 +200,7 @@ public class AppointmentController {
             return GeneralResponse.getResponse(HttpStatus.OK, schedule);
 
         }catch (Exception e){
-            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
+            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!"+ e.getMessage());
         }
     }
 
