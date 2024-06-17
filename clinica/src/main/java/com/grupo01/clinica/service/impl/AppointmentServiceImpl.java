@@ -1,12 +1,12 @@
 package com.grupo01.clinica.service.impl;
 
 import com.grupo01.clinica.domain.dtos.req.AppointmentDTO;
+import com.grupo01.clinica.domain.dtos.res.AppointmentResponseDTO;
 import com.grupo01.clinica.domain.entities.Appointment;
 import com.grupo01.clinica.domain.entities.Attends;
 import com.grupo01.clinica.domain.entities.Prescription;
 import com.grupo01.clinica.domain.entities.User;
 import com.grupo01.clinica.repositorie.AppointmentRepository;
-import com.grupo01.clinica.repositorie.AttendsRepository;
 import com.grupo01.clinica.repositorie.UserRepository;
 import com.grupo01.clinica.service.contracts.AppointmentService;
 import com.grupo01.clinica.service.contracts.AttendsService;
@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -93,6 +94,38 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<Appointment> findAllByStatus(String status) {
         return appointmentRepository.findAllByStatus(status);
+    }
+
+    @Override
+    public List<AppointmentResponseDTO> findAllFinished() {
+        List<Appointment> appointments = appointmentRepository.findAllByStatus("FINISHED");
+        List<AppointmentResponseDTO> listFinished = new ArrayList<>();
+
+        for (Appointment appointment: appointments){
+            AppointmentResponseDTO appointmentResponseDTO = new AppointmentResponseDTO();
+            appointmentResponseDTO.setId(appointment.getId());
+            appointmentResponseDTO.setName(appointment.getUser().getName());
+            appointmentResponseDTO.setReason(appointment.getReason());
+            listFinished.add(appointmentResponseDTO);
+        }
+
+        return listFinished;
+    }
+
+    @Override
+    public List<AppointmentResponseDTO> findAllApproved() {
+        List<Appointment> appointments = appointmentRepository.findAllByStatus("APPROVED");
+        List<AppointmentResponseDTO> listApproved = new ArrayList<>();
+
+        for (Appointment appointment: appointments){
+            AppointmentResponseDTO appointmentResponseDTO = new AppointmentResponseDTO();
+            appointmentResponseDTO.setId(appointment.getId());
+            appointmentResponseDTO.setName(appointment.getUser().getName());
+            appointmentResponseDTO.setReason(appointment.getReason());
+            listApproved.add(appointmentResponseDTO);
+        }
+
+        return listApproved;
     }
 
 
