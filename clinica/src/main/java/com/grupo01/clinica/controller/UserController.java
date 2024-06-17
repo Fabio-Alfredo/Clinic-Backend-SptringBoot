@@ -108,7 +108,6 @@ public class UserController {
             List<Historic> historics;
             if(startDate != null && endDate != null){
                 endDate.setTime(endDate.getTime() + 82800000);
-                System.out.println("End"+endDate);
                 historics = historyService.findByPatientAndDateRange(user, startDate, endDate);
             } else {
                 historics = user.getHistorics();
