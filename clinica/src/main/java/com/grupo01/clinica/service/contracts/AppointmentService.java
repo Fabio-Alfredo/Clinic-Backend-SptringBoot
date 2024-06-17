@@ -1,6 +1,7 @@
 package com.grupo01.clinica.service.contracts;
 
 import com.grupo01.clinica.domain.dtos.req.AppointmentDTO;
+import com.grupo01.clinica.domain.dtos.res.AppointmentFinishedDTO;
 import com.grupo01.clinica.domain.entities.Appointment;
 import com.grupo01.clinica.domain.entities.Prescription;
 import com.grupo01.clinica.domain.entities.User;
@@ -20,6 +21,7 @@ public interface AppointmentService {
     Appointment findById(UUID id);
     boolean isDoctorAndAppointment(User doctor, Appointment appointment);
     List<Appointment> findAllByStatus(String status);
+    List<AppointmentFinishedDTO> findAllFinished();
     //void updateStatus(List<User> doctors, Appointment appointment, String status);
 
     List<Appointment> getAppointments(User user, String status);

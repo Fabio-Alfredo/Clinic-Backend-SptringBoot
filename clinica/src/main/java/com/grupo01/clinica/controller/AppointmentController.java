@@ -268,4 +268,15 @@ public class AppointmentController {
         }
     }
 
+    @GetMapping("/finished")
+    @PreAuthorize("hasAnyAuthority('DCTR')")
+    public ResponseEntity<GeneralResponse> getAppointmentFinished(){
+        try {
+            List<AppointmentFinishedDTO> res = appointmentService.findAllFinished(  );
+            return GeneralResponse.getResponse(HttpStatus.OK, res);
+        } catch (Exception e) {
+            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
+        }
+    }
+
 }

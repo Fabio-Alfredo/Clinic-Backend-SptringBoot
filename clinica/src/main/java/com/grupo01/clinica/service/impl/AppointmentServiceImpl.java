@@ -1,6 +1,7 @@
 package com.grupo01.clinica.service.impl;
 
 import com.grupo01.clinica.domain.dtos.req.AppointmentDTO;
+import com.grupo01.clinica.domain.dtos.res.AppointmentFinishedDTO;
 import com.grupo01.clinica.domain.entities.Appointment;
 import com.grupo01.clinica.domain.entities.Attends;
 import com.grupo01.clinica.domain.entities.Prescription;
@@ -14,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -93,6 +95,22 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<Appointment> findAllByStatus(String status) {
         return appointmentRepository.findAllByStatus(status);
+    }
+
+    @Override
+    public List<AppointmentFinishedDTO> findAllFinished() {
+        List<Appointment> appointments = appointmentRepository.findAllByStatus("FINISHED");
+        List<AppointmentFinishedDTO> listFinished = new ArrayList<>();
+
+        for (Appointment appointment: appointments){
+            AppointmentFinishedDTO appointmentFinishedDTO = new AppointmentFinishedDTO();
+            appointmentFinishedDTO.setId(appointment.getId());
+            appointmentFinishedDTO.setName(appointment.getUser().getName());
+            appointmentFinishedDTO.setReason(appointment.getReason());
+            listFinished.add(appointmentFinishedDTO);
+        }
+
+        return listFinished;
     }
 
 
