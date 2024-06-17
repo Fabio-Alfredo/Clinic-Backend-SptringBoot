@@ -1,12 +1,10 @@
 package com.grupo01.clinica.service.contracts;
 
 import com.grupo01.clinica.domain.dtos.req.AppointmentDTO;
-import com.grupo01.clinica.domain.dtos.res.AppointmentFinishedDTO;
+import com.grupo01.clinica.domain.dtos.res.AppointmentResponseDTO;
 import com.grupo01.clinica.domain.entities.Appointment;
 import com.grupo01.clinica.domain.entities.Prescription;
 import com.grupo01.clinica.domain.entities.User;
-import com.grupo01.clinica.repositorie.AppointmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.List;
@@ -21,7 +19,8 @@ public interface AppointmentService {
     Appointment findById(UUID id);
     boolean isDoctorAndAppointment(User doctor, Appointment appointment);
     List<Appointment> findAllByStatus(String status);
-    List<AppointmentFinishedDTO> findAllFinished();
+    List<AppointmentResponseDTO> findAllFinished();
+    List<AppointmentResponseDTO> findAllApproved();
     //void updateStatus(List<User> doctors, Appointment appointment, String status);
 
     List<Appointment> getAppointments(User user, String status);
