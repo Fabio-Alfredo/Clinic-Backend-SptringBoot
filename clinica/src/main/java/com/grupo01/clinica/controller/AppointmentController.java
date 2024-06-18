@@ -214,8 +214,7 @@ public class AppointmentController {
     @PreAuthorize("hasAnyAuthority('ASST')")
     public ResponseEntity<GeneralResponse>approveAppointment(@RequestBody ApprovedAppointmentDTO  req){
         try {
-            System.out.println(req.getSchedulEndDate());
-            System.out.println(req.getRealization());
+
             Appointment appointment = appointmentService.findById(req.getAppointmentId());
             if(appointment == null){
                 return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "Appointment not found!");
