@@ -45,6 +45,19 @@ public class UserController {
         }
     }
 
+    @GetMapping("/data")
+    public ResponseEntity<GeneralResponse>getUser(){
+        try {
+            User user = userService.findUserAuthenticated();
+            if(user == null){
+                return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "User not found!");
+            }
+            return  GeneralResponse.getResponse(HttpStatus.OK, user);
+        }catch (Exception e){
+            return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
+        }
+    }
+
     @GetMapping("/")
     @PreAuthorize("hasAnyAuthority('ADMN')")
     public ResponseEntity<GeneralResponse> getUser(@RequestParam("id")UUID id){

@@ -214,6 +214,8 @@ public class AppointmentController {
     @PreAuthorize("hasAnyAuthority('ASST')")
     public ResponseEntity<GeneralResponse>approveAppointment(@RequestBody ApprovedAppointmentDTO  req){
         try {
+            System.out.println(req.getSchedulEndDate());
+            System.out.println(req.getRealization());
             Appointment appointment = appointmentService.findById(req.getAppointmentId());
             if(appointment == null){
                 return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "Appointment not found!");
@@ -229,9 +231,9 @@ public class AppointmentController {
                 return GeneralResponse.getResponse(HttpStatus.FOUND, "Appointment not accepted!");
             }
 
-            Date estimated = new Date(req.getRealization().getTime()+req.getDuration() * 60000L);
+            //Date estimated = new Date(req.getRealization().getTime()+req.getDuration() * 60000L);
             appointment.setAccepted(req.getIsAccepted());
-            appointment.setFinalization(estimated);
+            //appointment.setFinalization(estimated);
             appointment.setRealization(req.getRealization());
             appointment.setSchedulEndDate(req.getSchedulEndDate());
             appointment.setStatus("APPROVED");
@@ -249,7 +251,7 @@ public class AppointmentController {
                 if(doctor == null || !doctor.getRoles().contains(roleDoctor)){
                     return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "Doctor not found!");
                 }
-                boolean IsDoctorAvailable = appointmentService.isDoctorAndAvailable(doctor, req.getRealization(), estimated);
+                boolean IsDoctorAvailable = appointmentService.isDoctorAndAvailable(doctor, req.getRealization(), req.getSchedulEndDate());
                 if(!IsDoctorAvailable){
                     return GeneralResponse.getResponse(HttpStatus.FOUND, "Doctor not available!");
                 }
@@ -278,7 +280,7 @@ public class AppointmentController {
     @PreAuthorize("hasAnyAuthority('DCTR')")
     public ResponseEntity<GeneralResponse> getAppointmentFinished(){
         try {
-            List<AppointmentResponseDTO> res = appointmentService.findAllFinished(  );
+            List<AppointmentResponseDTO> res = appointmentService.findAllFinished();
             return GeneralResponse.getResponse(HttpStatus.OK, res);
         } catch (Exception e) {
             return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error!");
