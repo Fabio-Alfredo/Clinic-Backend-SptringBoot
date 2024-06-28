@@ -23,13 +23,11 @@ import java.util.UUID;
 public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
-    private final UserRepository userRepository;
     private final AttendsService attendsService;
     private final ModelMapper modelMapper;
 
-    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, UserRepository userRepository, AttendsService attendsService, ModelMapper modelMapper) {
+    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, AttendsService attendsService, ModelMapper modelMapper) {
         this.appointmentRepository = appointmentRepository;
-        this.userRepository = userRepository;
         this.attendsService = attendsService;
         this.modelMapper = modelMapper;
     }
