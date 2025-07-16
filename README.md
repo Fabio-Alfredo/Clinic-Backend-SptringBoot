@@ -122,9 +122,9 @@ El servidor se iniciará en el puerto `8080` por defecto. Puedes cambiar el puer
 
 ## 📝 Colaboradores
 Si deseas contribuir a este proyecto, por favor revisa las [contribuciones](CONTRIBUTING.md) y sigue las pautas establecidas.
-- [Tu Nombre](https://github.com/Fabio-Alfredo)
-- [Colaborador 1](https://github.com/Nietoof6)
-- [Colaborador 2](https://github.com/aroblesdev)
+- [Fabio Hernandez](https://github.com/Fabio-Alfredo)
+- [Mario Nieto](https://github.com/Nietoof6)
+- [Jose Robles](https://github.com/aroblesdev)
 
 ---
 
